@@ -16,9 +16,10 @@
 	
 //show the default form	
 ?>
+<div id="auspot-default">
 <h2><?php echo elgg_echo('au_spotlight:default'); ?></h2>
 <table>
-<caption><?php echo elgg_echo('au_spotlight:help'); ?>
+<caption><?php echo elgg_echo('au_spotlight:defaulthelp'); ?>
 </caption>
 <tr><td><?php echo elgg_echo('au_spotlight:left'); ?></td><td>
 
@@ -32,12 +33,13 @@
 	
 </td></tr>
 </table>
+</div>
 
 <?php // now show the form for logged-in users ?>
-
+<div id=<"auspot-default-logged-in">
 <h2><?php echo elgg_echo('au_spotlight:defaultloggedin'); ?></h2>
 <table>
-<caption><?php echo elgg_echo('au_spotlight:help'); ?>
+<caption><?php echo elgg_echo('au_spotlight:defaultloggedinhelp'); ?>
 </caption>
 <tr><td><?php echo elgg_echo('au_spotlight:left'); ?></td><td>
 
@@ -51,98 +53,97 @@
 	
 </td></tr>
 </table>
+</div>
 
 
-
-
-
+<div id="auspot-contexts">
 <?php
 // now deal with other contexts
 echo "<h2>".elgg_echo('au_spotlight:contexttitle')."</h2>";
 
 ?>
 
-<p>
-<?php 
-	//add a new context
-	echo elgg_echo('au_spotlight:numcontexts'); 
-?>
-</p>
-<p>
-<?php echo elgg_view("input/text", array("name"=>'params[auspotlight_numcontexts]',"value"=>$vars['entity']->auspotlight_numcontexts,"maxlength"=>3)); ?>
-</p>
-
 <?php
 //display user-defined contexts and associated text
-	if($vars['entity']->auspotlight_numcontexts){
-		echo "<h4>".elgg_echo('au_spotlight:contexts')."</h4>";	
-		/*generate a list of possible contexts based on pagehandlers
-		echo "<p><strong>".elgg_echo('au_spotlight:candidatecontexts')."</strong><em>";
-		$candidate_contexts=array_keys(elgg_get_config('pagehandler'));
-		foreach ($candidate_contexts as $candidate){
-			echo " &nbsp; $candidate ";
-		}
-		echo "</em></p>";
-		*/ 
-	}
+
+	echo "<p>".elgg_echo('au_spotlight:contexts')."</p>";	
+	echo "<p>".elgg_echo('au_spotlight:delete')."</p>";	
 	//let admin choose to show context only to admins
 	echo "<p>".elgg_echo('au_spotlight:showcontext');
 		if (elgg_get_plugin_setting('auspotlight_showcontext','au_spotlight')){
 			$checked=true;
 		} else {
 			$checked=false;
-		}
+		}	
 	echo elgg_view("input/checkbox", array("name"=>"params[auspotlight_showcontext]",
 			"checked"=>$checked,
 			'value'=>true,
 			'default'=>false))."</p>";
-	
+
+	//get the various arrays from the serialized variables
 	$contexts=unserialize($vars['entity']->auspotlight_context);
 	$tls=unserialize($vars['entity']->auspotlight_context_tl);
 	$tms=unserialize($vars['entity']->auspotlight_context_tm);
 	$trs=unserialize($vars['entity']->auspotlight_context_tr);
-	$loggedinonly=unserialize(elgg_get_plugin_setting('auspotlight_loggedinonly','au_spotlight'));
-	
-	
-	for($n=1;$n<=$vars['entity']->auspotlight_numcontexts;$n++){
-		echo "<h3>".elgg_echo('au_spotlight:context')." $n</h3>";
-		echo "<p>".elgg_view("input/text", array("name"=>"params[auspotlight_context][$n]","value"=>$contexts[$n]))."</p>";
+	$loggedinonly=unserialize($vars['entity']->auspotlight_loggedinonly);
+
+	//display forms for existing contexts
+	foreach($contexts as $k => $v){
+		echo "<h3>".elgg_echo('au_spotlight:context')." </h3>";
+		echo "<p>".elgg_view("input/text", array("name"=>"params[auspotlight_context][$k]","value"=>$v))."</p>";
 		
 		//checkbox for whether to show only to logged
 		echo "<p>".elgg_echo('au_spotlight:loggedinonly')." ";
-		if ($loggedinonly[$n]){
+		if ($loggedinonly[$k]){
 			$checked=true;
 		} else {
 			$checked=false;
 		}
-		echo elgg_view("input/checkbox", array("name"=>"params[auspotlight_loggedinonly][$n]","checked"=>$checked,'value'=>1,'default'=>0))."</p>";
+		echo elgg_view("input/checkbox", array("name"=>"params[auspotlight_loggedinonly][$k]","checked"=>$checked,'value'=>1,'default'=>0))."</p>";
 ?>
 		<table>
-		<caption><?php echo elgg_echo('au_spotlight:help'); ?>
-		
-
-		</caption>
 		<tr><td><?php echo elgg_echo('au_spotlight:left'); ?></td><td>
 		
-		<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tl][$n]", "value" =>$tls[$n])); ?>
+		<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tl][$k]", "value" =>$tls[$k])); ?>
 		</td></tr>
 		<tr><td><?php echo elgg_echo('au_spotlight:middle'); ?></td><td>
-			<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tm][$n]", "value" =>$tms[$n])); ?>
+			<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tm][$k]", "value" =>$tms[$k])); ?>
 		</td></tr>
 		<tr><td><?php echo elgg_echo('au_spotlight:right'); ?></td><td>
-			<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tr][$n]", "value" =>$trs[$n])); ?>
+			<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tr][$k]", "value" =>$trs[$k])); ?>
 			
 		</td></tr>
 		</table>
 
 
 <?php		
-	}
+	} //end foreach
 
+//finally, add a blank form to add a new context
+
+echo "<h3>".elgg_echo('au_spotlight:newcontext')."</h3>";
+echo "<p>".elgg_view("input/text", array("name"=>"params[auspotlight_context][]"))."</p>";
+
+//checkbox for whether to show only to logged
+echo "<p>".elgg_echo('au_spotlight:loggedinonly')." ";
+
+echo elgg_view("input/checkbox", array("name"=>"params[auspotlight_loggedinonly][]","checked"=>false,'value'=>1,'default'=>0))."</p>";
 ?>
+<table>
+<tr><td><?php echo elgg_echo('au_spotlight:left'); ?></td><td>
 
+<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tl][]")); ?>
+</td></tr>
+<tr><td><?php echo elgg_echo('au_spotlight:middle'); ?></td><td>
+	<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tm][]")); ?>
+</td></tr>
+<tr><td><?php echo elgg_echo('au_spotlight:right'); ?></td><td>
+	<?php echo elgg_view("input/longtext", array ("name"=>"params[auspotlight_context_tr][]")); ?>
+	
+</td></tr>
+</table>
 
-
+</div>
 
 
 
