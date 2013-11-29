@@ -35,37 +35,31 @@ foreach($contexts as $k => $v){
 }
 
 
-// read in the context and save
+// serialize the arrays
 $params['auspotlight_context'] = serialize($contexts);				
-save_params($params,$plugin,$plugin_name);
 
 $params['auspotlight_context_tl'] = serialize($tls);				
-save_params($params,$plugin,$plugin_name);
 
 $params['auspotlight_context_tm'] = serialize($tms);				
-save_params($params,$plugin,$plugin_name);
 
 $params['auspotlight_context_tr'] = serialize($trs);				
-save_params($params,$plugin,$plugin_name);
 
 $params['auspotlight_loggedinonly'] = serialize($lios);				
-save_params($params,$plugin,$plugin_name);
+
+//save
+foreach ($params as $k => $v) {
+	$result = $plugin->setSetting($k, $v);
+	if (!$result) {
+		register_error(elgg_echo('plugins:settings:save:fail', array($plugin_name)));
+		forward(REFERER);
+		exit;
+	}
+
+}
+
 
 system_message(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
 forward(REFERER);
 
-function save_params($params,$plugin,$plugin_name){	
-	foreach ($params as $k => $v) {
-		$result = $plugin->setSetting($k, $v);
-		if (!$result) {
-			register_error(elgg_echo('plugins:settings:save:fail', array($plugin_name)));
-			forward(REFERER);
-			exit;
-		}
 
-	}
-
-	
-	
-}
 
