@@ -18,3 +18,4 @@ To do
 -------
 
 - user interface is clunky and needs improvement
+- works with standard and elastic themes but may not work with others
