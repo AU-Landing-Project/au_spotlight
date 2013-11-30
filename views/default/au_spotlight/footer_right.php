@@ -8,7 +8,7 @@ $contexts=unserialize(elgg_get_plugin_setting('auspotlight_context','au_spotligh
 
 //make sure there is some default text in case none is defined
 //make sure there is some default text in case none is defined
-if (elgg_get_plugin_setting('auspotlight_generic_tr_loggedin','au_spotlight')!="" ){
+if (elgg_get_plugin_setting('auspotlight_generic_tr_loggedin','au_spotlight')!=""  && elgg_is_logged_in()){
 	$text=elgg_get_plugin_setting('auspotlight_generic_tr_loggedin','au_spotlight');
 }else{
 	$text = elgg_get_plugin_setting('auspotlight_generic_tr','au_spotlight');
