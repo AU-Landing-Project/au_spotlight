@@ -89,7 +89,7 @@ echo "<h2>".elgg_echo('au_spotlight:contexttitle')."</h2>";
 
 	//display forms for existing contexts
 	foreach($contexts as $k => $v){
-		echo "<h3>".elgg_echo('au_spotlight:context')." </h3>";
+		echo "<h3>".elgg_echo('au_spotlight:context').": $v </h3>";
 		echo "<p>".elgg_view("input/text", array("name"=>"params[auspotlight_context][$k]","value"=>$v))."</p>";
 		
 		//checkbox for whether to show only to logged

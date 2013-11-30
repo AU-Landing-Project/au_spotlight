@@ -11,6 +11,7 @@ elgg_register_event_handler('init', 'system', 'au_spotlight_init', 1);
 function au_spotlight_init(){
 
 	elgg_extend_view('css','au_spotlight/css');
+	elgg_extend_view('page/elements/footer','au_spotlight/footer',450);
 	elgg_extend_view('page/elements/footer/footer_left', 'au_spotlight/footer_left',450);
 	elgg_extend_view('page/elements/footer/footer_main', 'au_spotlight/footer_main',450);
 	elgg_extend_view('page/elements/footer/footer_right', 'au_spotlight/footer_right',450);
