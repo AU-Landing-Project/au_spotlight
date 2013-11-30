@@ -15,18 +15,21 @@ div#au_spotlight-footer p {
 
 
 div#au_spotlight-footer-left {
-	width: 250px;
+	width: 26%;
 	float: left;
+	padding: 2%;
 }
 
 div#au_spotlight-footer-main {
-	width: 400px;
+	width: 36%;
 	float: left;
+	padding: 2%;
 }
 
 div#au_spotlight-footer-right {
-	width: 250px;
+	width: 26%;
 	float: left;
+	padding: 2%;
 }
 
 
