@@ -1,4 +1,7 @@
 <?php
+
+namespace AU\Spotlight;
+
 /**
  * Elgg footer
  * Footer that displays across the site

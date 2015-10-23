@@ -1,36 +1,47 @@
 <?php
 
+namespace AU\Spotlight;
+
 /*
  * uses settings from admin to set contents of footer
  */
 
-$contexts=unserialize(elgg_get_plugin_setting('auspotlight_context','au_spotlight'));
+$contexts = array();
+$contexts_str = elgg_get_plugin_setting('auspotlight_context', PLUGIN_ID);
+if ($contexts_str) {
+	$contexts = unserialize($contexts_str);
+}
 
 //make sure there is some default text in case none is defined
-//make sure there is some default text in case none is defined
-if (elgg_get_plugin_setting('auspotlight_generic_tm_loggedin','au_spotlight')!=""  && elgg_is_logged_in()){
-	$text=elgg_get_plugin_setting('auspotlight_generic_tm_loggedin','au_spotlight');
-}else{
-	$text = elgg_get_plugin_setting('auspotlight_generic_tm','au_spotlight');
+$text = '';
+$default_text = elgg_get_plugin_setting('auspotlight_generic_tm_loggedin', PLUGIN_ID);
+if ($default_text != "" && elgg_is_logged_in()) {
+	$text = $default_text;
+} else {
+	$text = elgg_get_plugin_setting('auspotlight_generic_tm', PLUGIN_ID);
 }
+
 
 //check whether we have defined a context for this page
-
-if(array_search(elgg_get_context(),$contexts)>0){
+$thiscontext = array_search(elgg_get_context(), $contexts);
+if ($thiscontext !== false) {
 	//get the relevant column text
-	$thiscontext=array_search(elgg_get_context(),$contexts);
-	$ts=unserialize(elgg_get_plugin_setting('auspotlight_context_tm','au_spotlight'));
-	$loggedinonly=unserialize(elgg_get_plugin_setting('auspotlight_loggedinonly','au_spotlight'));
-	if ((elgg_is_logged_in()&&$loggedinonly[$thiscontext])||!$loggedinonly[$thiscontext]){
-		if ($ts[$thiscontext]!=null){
-			$text=$ts[$thiscontext];
-		}
+	$ts = array();
+	$ts_str = elgg_get_plugin_setting('auspotlight_context_tm', PLUGIN_ID);
+	if ($ts_str) {
+		$ts = unserialize($ts_str);
+	}
+	$loggedinonly = array();
+	$loggedinonly_str = elgg_get_plugin_setting('auspotlight_loggedinonly', PLUGIN_ID);
+	if ($loggedinonly_str) {
+		$loggedinonly = unserialize($loggedinonly_str);
 	}
 	
-}else{
-	//debug
-
-	
+	if ((elgg_is_logged_in() && $loggedinonly[$thiscontext]) || !$loggedinonly[$thiscontext]) {
+		if ($ts[$thiscontext] != null) {
+			$text = $ts[$thiscontext];
+		}
+	}
 }
 
-echo "<p>".$text."</p>";
+echo "<p>" . $text . "</p>";

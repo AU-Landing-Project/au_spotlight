@@ -1,0 +1,20 @@
+{
+    "name": "au/au_spotlight",
+    "type": "elgg-plugin",
+    "description": "Provides custom spotlight content at the foot of the page",
+    "homepage": "https://github.com/AU-Landing-Project/au_spotlight",
+    "keywords": ["elgg", "plugin", "spotlight", "AU"],
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Jon Dron"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/AU-Landing-Project/au_spotlight/issues"
+    },
+    "require": {
+        "php": ">=5.4",
+        "composer/installers": ">=1.0.8"
+    }
+}
